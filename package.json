@@ -1,0 +1,17 @@
+{
+  "name": "csrc-parliament-voting",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CSRC OAU parliamentary electronic voting",
+  "scripts": {
+    "build": "node scripts/generate-firebase-config.js",
+    "dev": "npm run build && npx serve . -p 3000",
+    "vercel-build": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5"
+  }
+}

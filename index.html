@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSRC Parliament — Obafemi Awolowo University</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div id="configBanner" class="config-banner" hidden>
+    <div class="config-banner-inner">
+      <p class="config-banner-title">Live mode is not configured</p>
+      <p class="config-banner-text">
+        Add your Firebase environment variables in Vercel (or in <code>.env</code> locally), then run
+        <code>npm run build</code> and redeploy. See <code>.env.example</code> for variable names.
+      </p>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="10" fill="url(#markGrad)"/>
+            <path d="M12 28V12h4.5l5.5 9.2L27.5 12H32v16h-3.8V17.8L22.2 28h-3.4L11.8 17.8V28H12z" fill="#0a1f14"/>
+            <defs>
+              <linearGradient id="markGrad" x1="0" y1="0" x2="40" y2="40">
+                <stop stop-color="#e8c97a"/>
+                <stop offset="1" stop-color="#c9a227"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-kicker">Obafemi Awolowo University</span>
+          <span class="brand-title">Computer Students Representative Council</span>
+          <span class="brand-sub">Parliamentary Division · Electronic Voting</span>
+        </div>
+      </div>
+      <div class="sync-badge" id="syncBadge" hidden>
+        <span class="sync-dot"></span>
+        <span id="syncLabel">Connected</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="app" class="app-shell">
+    <section id="viewHome" class="view view-enter active">
+      <div class="hero">
+        <span class="eyebrow">CSRC Parliamentary Sitting</span>
+        <h1>Transparent, fair voting for every motion before the house</h1>
+        <p class="lead">
+          The presiding officer states the motion and shares a session code.
+          Honourable members join from their devices and cast one vote each.
+        </p>
+      </div>
+
+      <div class="steps-strip" aria-hidden="true">
+        <div class="step"><span class="step-num">1</span><span>Motion moved</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="step-num">2</span><span>Code shared</span></div>
+        <div class="step-line"></div>
+        <div class="step"><span class="step-num">3</span><span>Division &amp; result</span></div>
+      </div>
+
+      <div class="role-cards">
+        <button type="button" class="role-card role-card--officer" data-role="officer">
+          <div class="role-card-glow"></div>
+          <div class="role-icon-wrap">
+            <svg class="role-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 3v18M8 7h8M6 12h12M8 17h8" stroke-linecap="round"/>
+              <circle cx="12" cy="5" r="2" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <span class="role-name">Presiding Officer</span>
+          <span class="role-desc">Move a motion, control voting, and view live results in real time</span>
+          <span class="role-cta">Open dashboard →</span>
+        </button>
+        <button type="button" class="role-card role-card--member" data-role="member">
+          <div class="role-card-glow"></div>
+          <div class="role-icon-wrap">
+            <svg class="role-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="4" y="4" width="16" height="16" rx="3"/>
+              <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="role-name">Parliamentarian</span>
+          <span class="role-desc">Enter the session code on your device and cast your vote securely</span>
+          <span class="role-cta">Join session →</span>
+        </button>
+      </div>
+
+      <div class="mode-hint" id="modeHint">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <span class="mode-hint-text"></span>
+      </div>
+    </section>
+
+    <section id="viewOfficer" class="view" hidden>
+      <div class="view-head">
+        <button type="button" class="back-btn" data-back aria-label="Go back">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back
+        </button>
+        <div class="view-title-block">
+          <span class="eyebrow">Officer</span>
+          <h2>Presiding Officer Dashboard</h2>
+        </div>
+      </div>
+
+      <div class="panel glass-panel" id="officerSetup">
+        <div class="panel-header">
+          <h3>Move a motion</h3>
+          <p>State the motion clearly as it will appear to all parliamentarians.</p>
+        </div>
+        <label class="field">
+          <span>Motion before the house</span>
+          <textarea id="motionInput" rows="4" placeholder="e.g. That the faculty levy be reviewed and adjusted for the 2025/2026 academic session…" required></textarea>
+        </label>
+        <label class="field">
+          <span>Session title <em>(optional)</em></span>
+          <input type="text" id="sessionTitle" placeholder="e.g. 3rd Sitting — May 2026" />
+        </label>
+        <button type="button" class="btn btn-primary btn-lg" id="btnCreateSession">
+          <span>Move motion &amp; generate code</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+
+      <div class="panel glass-panel session-active" id="officerActive" hidden>
+        <div class="code-display">
+          <div class="code-display-inner">
+            <span class="code-label">Session code</span>
+            <span class="code-hint">Share with all parliamentarians</span>
+            <span class="code-value" id="sessionCode" aria-label="Session code">------</span>
+            <button type="button" class="btn btn-outline btn-sm" id="btnCopyCode">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              Copy code
+            </button>
+          </div>
+        </div>
+
+        <div class="motion-card">
+          <div class="motion-card-accent"></div>
+          <span class="motion-label">Motion before the house</span>
+          <p id="displayMotion"></p>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-chip">
+            <span class="status-pill" id="sessionStatus">Pending</span>
+          </div>
+          <div class="stat-chip stat-chip--muted">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            <span id="voteCount">0 votes cast</span>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button type="button" class="btn btn-success" id="btnOpenVoting">Open voting</button>
+          <button type="button" class="btn btn-danger" id="btnCloseVoting" disabled>Close voting</button>
+          <button type="button" class="btn btn-ghost" id="btnNewSession">New motion</button>
+        </div>
+
+        <div class="results-block">
+          <div class="results-header">
+            <h3>Live results</h3>
+            <span class="results-live-dot"></span>
+          </div>
+          <div class="result-bars" id="resultBars">
+            <div class="result-card result-card--yes">
+              <div class="result-card-top">
+                <span class="result-label">Yes</span>
+                <span class="result-num" id="countYes">0</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill bar-yes" id="barYes" style="width:0%"></div></div>
+            </div>
+            <div class="result-card result-card--no">
+              <div class="result-card-top">
+                <span class="result-label">No</span>
+                <span class="result-num" id="countNo">0</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill bar-no" id="barNo" style="width:0%"></div></div>
+            </div>
+            <div class="result-card result-card--abstain">
+              <div class="result-card-top">
+                <span class="result-label">Abstain</span>
+                <span class="result-num" id="countAbstain">0</span>
+              </div>
+              <div class="bar-track"><div class="bar-fill bar-abstain" id="barAbstain" style="width:0%"></div></div>
+            </div>
+          </div>
+          <p class="verdict" id="verdict" hidden></p>
+        </div>
+
+        <details class="votes-log">
+          <summary>
+            <span>Vote register</span>
+            <span class="votes-log-badge">Officer only</span>
+          </summary>
+          <ul id="votesList"></ul>
+        </details>
+      </div>
+    </section>
+
+    <section id="viewMember" class="view" hidden>
+      <div class="view-head">
+        <button type="button" class="back-btn" data-back aria-label="Go back">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back
+        </button>
+        <div class="view-title-block">
+          <span class="eyebrow">Member</span>
+          <h2>Parliamentarian Portal</h2>
+        </div>
+      </div>
+
+      <div class="panel glass-panel" id="memberJoin">
+        <div class="panel-header">
+          <h3>Join sitting</h3>
+          <p>Enter the code announced by the presiding officer and your credentials.</p>
+        </div>
+        <label class="field field--code">
+          <span>Session code</span>
+          <input type="text" id="codeInput" maxlength="6" placeholder="A7K2M9" autocomplete="off" class="code-input" inputmode="text" />
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span>Matric number</span>
+            <input type="text" id="matricInput" placeholder="CSC/2019/001" required />
+          </label>
+          <label class="field">
+            <span>Full name</span>
+            <input type="text" id="nameInput" placeholder="As on council register" required />
+          </label>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg" id="btnJoinSession">Join session</button>
+        <p class="form-error" id="joinError" hidden></p>
+      </div>
+
+      <div class="panel glass-panel" id="memberVote" hidden>
+        <div class="session-meta">
+          <span class="code-chip" id="memberCodeChip"></span>
+          <span class="status-pill" id="memberStatus">—</span>
+        </div>
+
+        <div class="motion-card">
+          <div class="motion-card-accent"></div>
+          <span class="motion-label">Motion before the house</span>
+          <p id="memberMotion"></p>
+        </div>
+
+        <div class="member-badge" id="memberGreeting"></div>
+
+        <div class="vote-panel" id="votePanel">
+          <p class="vote-prompt">Cast your vote on this motion</p>
+          <div class="vote-buttons">
+            <button type="button" class="btn-vote btn-vote--yes" data-vote="yes">
+              <span class="vote-icon">✓</span>
+              <span class="vote-label">Yes</span>
+            </button>
+            <button type="button" class="btn-vote btn-vote--no" data-vote="no">
+              <span class="vote-icon">✕</span>
+              <span class="vote-label">No</span>
+            </button>
+            <button type="button" class="btn-vote btn-vote--abstain" data-vote="abstain">
+              <span class="vote-icon">—</span>
+              <span class="vote-label">Abstain</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="vote-confirmed" id="voteConfirmed" hidden>
+          <div class="confirmed-ring">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <p class="confirmed-title">Vote recorded</p>
+          <p class="confirmed-choice" id="confirmedChoice"></p>
+          <p class="hint">You may change your vote while the division remains open.</p>
+        </div>
+
+        <p class="form-error" id="voteError" hidden></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>CSRC · Faculty of Computing Sciences & Engineering</span>
+      <span class="footer-dot">·</span>
+      <span>Obafemi Awolowo University, Ile-Ife</span>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="js/firebase-config.js?v=live"></script>
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+  
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyC2mOjX-F5eIy_MmQn_KxVUTPpU6uwNQng",
+    authDomain: "csrc-c32h.firebaseapp.com",
+    databaseURL: "https://csrc-c32h-default-rtdb.firebaseio.com",
+    projectId: "csrc-c32h",
+    storageBucket: "csrc-c32h.firebasestorage.app",
+    messagingSenderId: "280086200590",
+    appId: "1:280086200590:web:562d23389462f350f2575f"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
+
+</body>
+</html>

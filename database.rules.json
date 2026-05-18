@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "sessions": {
+      "$code": {
+        ".read": true,
+        ".write": true,
+        "votes": {
+          "$matric": {
+            ".write": true,
+            ".validate": "newData.hasChildren(['vote', 'name', 'matric', 'at']) && newData.child('vote').isString()"
+          }
+        }
+      }
+    }
+  }
+}
