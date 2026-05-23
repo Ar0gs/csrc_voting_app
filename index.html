@@ -30,20 +30,11 @@
   <header class="site-header">
     <div class="header-inner">
       <div class="brand">
-        <div class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="40" height="40" rx="10" fill="url(#markGrad)"/>
-            <path d="M12 28V12h4.5l5.5 9.2L27.5 12H32v16h-3.8V17.8L22.2 28h-3.4L11.8 17.8V28H12z" fill="#0a1f14"/>
-            <defs>
-              <linearGradient id="markGrad" x1="0" y1="0" x2="40" y2="40">
-                <stop stop-color="#e8c97a"/>
-                <stop offset="1" stop-color="#c9a227"/>
-              </linearGradient>
-            </defs>
-          </svg>
+        <div class="nacos-logo" aria-hidden="true">
+          <img src="images/nacos-logo.png" alt="NACOS logo" />
         </div>
         <div class="brand-text">
-          <span class="brand-kicker">Obafemi Awolowo University</span>
+          <span class="brand-kicker">NACOS · Obafemi Awolowo University</span>
           <span class="brand-title">Computer Students Representative Council</span>
           <span class="brand-sub">Parliamentary Division · Electronic Voting</span>
         </div>
@@ -57,8 +48,13 @@
 
   <main id="app" class="app-shell">
     <section id="viewHome" class="view view-enter active">
+      <div class="hero-seal">
+        <div class="hero-seal-ring">
+          <img src="images/nacos-logo.png" alt="NACOS seal" />
+        </div>
+      </div>
       <div class="hero">
-        <span class="eyebrow">CSRC Parliamentary Sitting</span>
+        <span class="eyebrow">NACOS · CSRC Parliamentary Sitting</span>
         <h1>Transparent, fair voting for every motion before the house</h1>
         <p class="lead">
           The presiding officer states the motion and shares a session code.
@@ -311,26 +307,10 @@
   <script src="js/store.js"></script>
   <script src="js/app.js"></script>
   
-  <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyC2mOjX-F5eIy_MmQn_KxVUTPpU6uwNQng",
-    authDomain: "csrc-c32h.firebaseapp.com",
-    databaseURL: "https://csrc-c32h-default-rtdb.firebaseio.com",
-    projectId: "csrc-c32h",
-    storageBucket: "csrc-c32h.firebasestorage.app",
-    messagingSenderId: "280086200590",
-    appId: "1:280086200590:web:562d23389462f350f2575f"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-</script>
+  <!-- Modular SDK block removed: the compat SDK above (firebase-app-compat +
+       firebase-database-compat) is initialized by store.js using the config
+       injected via js/firebase-config.js. A second modular initializeApp()
+       here caused a duplicate-app conflict and bypassed the env-var system. -->
 
 </body>
 </html>
