@@ -25,7 +25,11 @@
     return String(matric || "")
       .trim()
       .toUpperCase()
-      .replace(/\s+/g, "");
+      // FIX: remove ALL characters that are illegal as Firebase path segments.
+      // Forward slashes are path separators in RTDB — keeping them turns
+      // "CSC/2021/056" into three nested nodes instead of one key, which
+      // breaks the security rules and causes permission_denied.
+      .replace(/[\/\\.#$\[\]\s]/g, "");
   }
 
   function emptySession(overrides) {
@@ -96,12 +100,14 @@
       const session = await this.getSession(code);
       if (!session) throw new Error("Invalid session code.");
       if (session.status !== "open") throw new Error("Voting is not open.");
+      // normalizeMatric strips slashes — safe to use directly as a RTDB key
       const id = normalizeMatric(matric);
       if (!id) throw new Error("Matric number is required.");
       const entry = {
         vote,
         name: String(name || "").trim(),
-        matric: id,
+        matric: id,          // stored as clean key e.g. "CSC2021056"
+        matricRaw: String(matric || "").trim().toUpperCase(), // human-readable original
         at: Date.now(),
       };
       await this._ref(code).child("votes").child(id).set(entry);
