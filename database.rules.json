@@ -7,7 +7,7 @@
         "votes": {
           "$matric": {
             ".write": true,
-            ".validate": "newData.hasChildren(['vote', 'name', 'matric', 'at']) && newData.child('vote').isString()"
+            ".validate": "newData.hasChildren(['vote', 'name', 'matric', 'at']) && newData.child('vote').isString() && newData.child('matric').isString() && newData.child('name').isString()"
           }
         }
       }
